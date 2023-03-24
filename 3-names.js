@@ -1,0 +1,10 @@
+const names = require('./2-names')
+const sayHi = require('./1-names')
+const data = require('./4-alternatives')
+require('./5-mind-grenade')
+    //console.log(data)
+
+// sayHi('susan')
+// sayHi('joy')
+// sayHi(names.john)
+// sayHi(names.peter)
