@@ -1,0 +1,35 @@
+const Alpaca = require('@alpacahq/alpaca-trade-api')
+
+// Set up the Alpaca API client
+const alpaca = new Alpaca({
+  keyId: '<YOUR_API_KEY>',
+  secretKey: '<YOUR_API_SECRET>',
+  paper: true, // Use the paper trading environment
+  usePolygon: false // Use the Alpaca Data API
+})
+
+// Define the trading algorithm
+async function runTradingAlgorithm() {
+  // Get the latest stock prices for Apple
+  const barset = await alpaca.getBars('1Min', 'AAPL', {limit: 20})
+  const lastPrice = barset.AAPL.slice(-1)[0].c
+
+  // Place a buy order if the price is below $120
+  if (lastPrice < 120) {
+    const order = await alpaca.createOrder({
+      symbol: 'AAPL',
+      qty: 100,
+      side: 'buy',
+      type: 'limit',
+      time_in_force: 'gtc',
+      limit_price: 119.99
+    })
+
+    console.log('Buy order placed:', order)
+  }
+}
+
+// Run the trading algorithm every minute
+setInterval(() => {
+  runTradingAlgorithm()
+}, 60 * 1000)
